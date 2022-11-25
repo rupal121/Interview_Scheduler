@@ -1,0 +1,26 @@
+<%- include("Partials/header"); -%>
+<h1> Update Schedule</h1>
+
+<form action="/interviews/update" method="post">
+<div class=" main mb-3">
+  <label for="exampleFormControlInput1" class="form-label">Start Date</label>
+  <input type="time" class="form-control" id="exampleFormControlInput1" placeholder="Start" name="startTime">
+</div>
+<div class=" main mb-3">
+  <label for="exampleFormControlTextarea1" class="form-label">End time</label>
+  <input type="time" class="form-control" id="exampleFormControlInput1" placeholder="Title" name="endTime">
+</div>
+<input type="text" name="interviewId" value="<%=interviewId%>" hidden>
+<div class="main mb-3">
+  <select name="users" id="users" multiple>
+
+  <% allUsers.forEach(function(user){ %>
+    <option > <%=  user.email %></option>
+  <% }) ; %>
+  
+  </select>
+</div>
+<button style="margin-top: 2%;" class=" btn btn-md btn-primary" type="submit">Update</button>
+
+</form>
+<%- include("Partials/footer"); -%>

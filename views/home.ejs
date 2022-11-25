@@ -1,0 +1,35 @@
+<%- include("Partials/header"); -%>
+
+
+
+<h1>Schedules</h1>
+
+ 
+<% interviews.forEach(function(item,index){ %>
+  <div>
+    <form action="/update" method="post">
+      <input type="text" name="interviewId" value="<%=item._id%>" hidden>
+    <span style='font-family: "bold"' >Interview <%=index+1%> </span>
+    <br>
+    <span style='font-family: "bold"'>Participants : </span>
+    
+    <% item.email.forEach(function(e){%>
+      <span style='font-family: "bold"'><%=e%> </span>
+      &nbsp&nbsp&nbsp&nbsp&nbsp
+    <% }) %>
+    <br>
+    Start Time : <span style='font-family: "bold"'><%=item.startTime%> </span>
+    <br>
+    End Time : <span style='font-family: "bold"'><%=item.endTime%> </span>
+    <br>
+    
+      <button style="margin-top: 2%;" class=" btn btn-md btn-primary" type="submit">Update</button>
+      </form>
+    <hr>
+</div>
+<% })  %>
+
+ 
+
+<%- include("Partials/footer"); -%>
+
