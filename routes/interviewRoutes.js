@@ -4,7 +4,7 @@ const interview= require('../models/interviews')
 // const mailSend= require('../mailsend.js')
 const User= require('../models/user.js')
 const check= require('../middleware/check.js')
-// const checkUpdates= require('../middleware/checkUpdates.js')
+const checkUpdates= require('../middleware/checkUpdates.js')
 
 // Creating new intereview here
 router.post('/' ,check ,async(req, res)=>{
@@ -51,20 +51,18 @@ router.get('/read', async(req, res)=>{
     }
 })
 
-router.post('/update', async(req, res)=>{
-    // console.log(req.body);
-    // router.post('/update',checkUpdates, async(req, res)=>{
+router.post('/update',checkUpdates, async(req, res)=>{
     try{
         const interviewId=req.body.interviewId;
 
         const currInterview= await interview.findById(interviewId)
         email=[]
         
-        // //  sending updateMail to the users in the updated interview
-        req.body.user.forEach((newUser)=>{
-            email.push(newUser.email)
+        // // //  sending updateMail to the users in the updated interview
+        req.body.users.forEach((e1)=>{
+            email.push(e1)
         })
-        console.log(email)
+        // console.log(email)
 
         //updating the given interview's data
         await interview.findByIdAndUpdate(interviewId, {
@@ -73,27 +71,29 @@ router.post('/update', async(req, res)=>{
             endTime: req.body.endTime
         })
         const Interview = await interview.findById(interviewId)
-
+        // console.log(Interview)
+        
         //updating interviews's list of newly added users 
-        // req.body.user.forEach(async (users)=>{
-        //     const USER= await User.findById(users._id)
-        //     if(!(USER.interviews.includes(req.body.interviewId))){
-        //         await USER.interviews.push(req.body.interviewId)
-        //         await USER.save()
-        //     }
-        //     // mailSend.sendUpdateMail(USER.email, USER.name, req.body.startTime, req.body.endTime)
-        // })
+        req.body.users.forEach(async (email)=>{
+            const USER= await User.findOne({email})
+            if(!(USER.interviews.includes(interviewId))){
+                
+                await USER.interviews.push(interviewId)
+                await USER.save()
+            }
+            // mailSend.sendUpdateMail(USER.email, USER.name, req.body.startTime, req.body.endTime)
+        })
         // // //updating interviews's list of  users' those are remeved from the updated interview 
-        // const oldUsersEmail= currInterview.email.filter((emails) => !(Interview.email.includes(emails)))
-
-        // oldUsersEmail.forEach(async (oldEmail)=>{
-        //     const oldUser= await User.findOne({email:oldEmail})
-        //     const index = oldUser.interviews.indexOf(req.body.interviewId)
-        //     if (index > -1) {
-        //         oldUser.interviews.splice(index, 1);
-        //     }
-        //     await oldUser.save()
-        // })
+        const oldUsersEmail= currInterview.email.filter((email1) => !(Interview.email.includes(email1)))
+        
+        oldUsersEmail.forEach(async (oldEmail)=>{
+            const oldUser = await User.findOne({email:oldEmail})
+            const index = oldUser.interviews.indexOf(interviewId)
+            if (index > -1) {
+                oldUser.interviews.splice(index, 1);
+            }
+            await oldUser.save()
+        })
        
         res.send('Interview updated Successfully!')
     }
