@@ -18,8 +18,7 @@ const check= async(req, res, next)=>{
     if(startTime > endTime)
     return res.status(404).send({error: "Start time must be before end time"})
 
-    // if(new Date(parseInt(startTime)).toLocaleDateString() < current_date )
-    // return res.status(404).send({error: "Time has already past"})
+    
     
     if (startTime < current_time)
         return res.status(404).send({error: "Time has already past"})

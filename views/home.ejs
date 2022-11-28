@@ -6,7 +6,7 @@
 
  
 <% interviews.forEach(function(item,index){ %>
-  <div>
+  <div style ="border-width:5px">
     <form action="/update" method="post">
       <input type="text" name="interviewId" value="<%=item._id%>" hidden>
     <span style='font-family: "bold"' >Interview <%=index+1%> </span>

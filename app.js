@@ -28,7 +28,6 @@ mongoose.connect("mongodb://127.0.0.1:27017/scaler-proj", {useNewUrlParser:true}
 
 app.get("/",async(req, res)=>{
 	const allUsers= await User.find({});
-	// console.log(allUsers);
 	res.render("create", {allUsers});
 });
 
@@ -41,55 +40,9 @@ app.get("/view",async(req, res)=>{
 
 app.post("/update",async(req, res)=>{
 	const allUsers= await User.find({});
-	// console.log(allUsers);
 	const interviewId=req.body.interviewId;
 	res.render("update", {allUsers,interviewId});
 });
-
-// app.get("/about", function(req, res){
-// 	res.render("about", {parb:  aboutContent} );
-// });
-// app.get("/contact", function(req, res){
-// 	res.render("contact", {parc:  contactContent} );
-// });
-// app.get("/compose", function(req, res){
-// 	res.render("compose");
-// });
- 
-// app.post("/compose", function(req, res){
-// 	const post = new Post ({
-// 			title: req.body.title,
-// 		content: req.body.blog	
-// 	});
-// 	//posts.push(post);
-// 	post.save(function(err){
-// 		if(!err){
-// 			res.redirect("/");
-
-// 		}
-// 	});
-
-
-// });
-
-
-
-// app.get("/posts/:postId", function(req,res){
-// 	const requestedPostId = req.params.postId;
-// 	Post.findOne({_id: requestedPostId}, function(err, post){    
-//          res.render("post", {
-//          	title: post.title,
-//          	content: post.content
-//          });
-
-// 		});
-	
-// });
-
-
-
-
-
 
 let port = process.env.PORT;
 if(port == null || port == ""){
